@@ -114,7 +114,6 @@ class MoneyTests: XCTestCase {
 
   func testSubtractCANtoUSD() {
       let result = fifteenCAN.subtract(tenUSD)
-      print(result)
       XCTAssert(result.amount == 2)
       XCTAssert(result.currency == "USD")
   }
@@ -146,7 +145,7 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
-        
+
         ("testSubtractUSDtoUSD", testSubtractUSDtoUSD),
         ("testSubtractUSDtoGBP", testSubtractUSDtoGBP),
         ("testAddGBPtoEUR", testAddGBPtoEUR),
