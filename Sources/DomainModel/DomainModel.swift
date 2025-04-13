@@ -51,7 +51,7 @@ public struct Money {
 
     func add(_ other: Money) -> Money {
         if currencies.contains(other.currency) {
-            let converted = self.convert(other.currency)
+            let converted: Money = self.convert(other.currency)
             return Money(amount: converted.amount + other.amount, currency: other.currency)
         } else {
             fatalError("Unsupported currency")
@@ -60,8 +60,8 @@ public struct Money {
 
     func subtract(_ other: Money) -> Money {
         if currencies.contains(other.currency) {
-            let convertedOther = other.convert(currency)
-            return Money(amount: amount - convertedOther.amount, currency: currency)
+            let converted: Money = self.convert(other.currency)
+            return Money(amount: converted.amount - other.amount, currency: other.currency)
         } else {
             fatalError("Unsupported currency")
         }
@@ -111,14 +111,27 @@ public class Job {
             type = .Salary(UInt(Double(salary) + byAmount))
         }
     }
+
+    // Extra credit
+    func convert() {
+        switch type {
+        case .Hourly(let hourlyRate):
+            let yearlySalary = hourlyRate * 2000
+            let rounded: UInt = UInt((Double(yearlySalary) / 1000).rounded(.up) * 1000)
+            type = .Salary(UInt(rounded))
+        case .Salary:
+            break
+        }
+    }
 }
 
 ////////////////////////////////////
 // Person
 //
+// Extra credit
 public class Person {
     var firstName: String
-    var lastName: String
+    var lastName: String?
     var age: Int
     private var _job: Job?
     var job: Job? {
@@ -149,16 +162,24 @@ public class Person {
         }
     }
 
-    init(firstName: String, lastName: String, age: Int) {
+    init(firstName: String, lastName: String? = nil, age: Int) {
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
     }
 
     func toString() -> String {
-        let jobDescription = job != nil ? "\(job!)" : "nil"
-        let spouseDescription = spouse != nil ? "\(spouse!.firstName) \(spouse!.lastName)" : "nil"
-        return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(jobDescription) spouse:\(spouseDescription)]"
+        // let jobDescription = job != nil ? "\(job!)" : "nil"
+        let spouseDescription: String
+        if let spouse = spouse {
+            let spouseLastName = spouse.lastName ?? ""
+            spouseDescription = "\(spouse.firstName)\(spouseLastName.isEmpty ? "" : " \(spouseLastName)")"
+        } else {
+            spouseDescription = "nil"
+        }
+        let personLastName: String = lastName ?? "nil"
+        let jobDescription = job?.title ?? "nil"
+        return "[Person: firstName:\(firstName) lastName:\(personLastName) age:\(age) job:\(jobDescription) spouse:\(spouseDescription)]"
     }
 }
 

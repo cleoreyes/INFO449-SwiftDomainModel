@@ -81,6 +81,56 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.currency == "GBP")
   }
 
+  // Extra credit
+  func testSubtractUSDtoUSD() {
+    let result = tenUSD.subtract(Money(amount: 5, currency: "USD"))
+    XCTAssert(result.amount == 5)
+    XCTAssert(result.currency == "USD")
+  }
+
+  func testSubtractUSDtoGBP() {
+      let result = tenUSD.subtract(fiveGBP)
+      XCTAssert(result.amount == 0)
+      XCTAssert(result.currency == "GBP")
+  }
+
+  func testAddGBPtoEUR() {
+      let result = fiveGBP.add(fifteenEUR)
+      XCTAssert(result.amount == 30)
+      XCTAssert(result.currency == "EUR")
+  }
+
+  func testSubtractGBPtoEUR() {
+      let result = fiveGBP.subtract(fifteenEUR)
+      XCTAssert(result.amount == 0)
+      XCTAssert(result.currency == "EUR")
+  }
+
+  func testAddCANtoUSD() {
+      let result = fifteenCAN.add(tenUSD)
+      XCTAssert(result.amount == 22)
+      XCTAssert(result.currency == "USD")
+  }
+
+  func testSubtractCANtoUSD() {
+      let result = fifteenCAN.subtract(tenUSD)
+      print(result)
+      XCTAssert(result.amount == 2)
+      XCTAssert(result.currency == "USD")
+  }
+
+  func testConvertGBPtoEUR() {
+      let eur = fiveGBP.convert("EUR")
+      XCTAssert(eur.currency == "EUR")
+      XCTAssert(eur.amount == 15)
+  }
+
+  func testConvertEURtoGBP() {
+      let gbp = fifteenEUR.convert("GBP")
+      XCTAssert(gbp.currency == "GBP")
+      XCTAssert(gbp.amount == 5)
+  }
+
     static var allTests = [
         ("testCanICreateMoney", testCanICreateMoney),
 
@@ -96,6 +146,15 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
+        
+        ("testSubtractUSDtoUSD", testSubtractUSDtoUSD),
+        ("testSubtractUSDtoGBP", testSubtractUSDtoGBP),
+        ("testAddGBPtoEUR", testAddGBPtoEUR),
+        ("testSubtractGBPtoEUR", testSubtractGBPtoEUR),
+        ("testAddCANtoUSD", testAddCANtoUSD),
+        ("testSubtractCANtoUSD", testSubtractCANtoUSD),
+        ("testConvertGBPtoEUR", testConvertGBPtoEUR),
+        ("testConvertEURtoGBP", testConvertEURtoGBP)
     ]
 }
 
